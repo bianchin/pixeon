@@ -1,7 +1,7 @@
 # Project to Pixeon Tech Challenge
 
 
-## Construção
+### Construção
 
 Foi desenvolvido com Springboot versão 2.2.2.RELEASE
 
@@ -13,82 +13,109 @@ Os serviços se comunicam via REST, o que nesse caso geralmente eu adotaria um e
 
 Foi criado 2 servicos (Exam e Healthcare), um servidor de configuração e um service discovery
 
+- pixeon-config-server: localhost:9091
+- pixeon-eureka-server: localhost:9092
+- pixeon-exam-service: localhost:9093
+- pixeon-healthcare-service: localhost:9094
+
 Arquivos de configuração estáo no repositorio [repositorio git](https://github.com/bianchin/pixeon-configs)
 
 
-## Solution
+### Solution
 
 
 
-#### Create a Healthcare
+##### Create a Healthcare
 
 curl -X POST -H 'Content-Type: application/json' -d '{"name": "Hospital Sao Jose 1", "cnpj": "74588658000100"}' http://localhost:9094/api/healthcares/
 
-Retorna o código do healthcareId a ser usado nas proximas requisições
+Retorna o código do **healthcareId** a ser usado nas proximas requisições
 
-#### Create an exam
+##### Create an exam
 
+```console
 curl -X POST -H 'Content-Type: application/json' -d '{"patient" : {"name": "Jose Silva","age": 25, "gender": "M" }, "physician" : {"name": "Dr Joao","crm": 12345 }, "procedureName": "Raio X"}' http://localhost:9093/api/healthcares/<healthcareId>/exams/
+```
 
-Retorna o examId a ser usado nas próximas requisições
+Retorna o **examId** a ser usado nas próximas requisições
 
-#### Update an exam
+##### Update an exam
 
+```console
 curl -X PUT -H 'Content-Type: application/json' -d '{"patient" : {"name": "Jose Silva","age": 25, "gender": "M" }, "physician" : {"name": "Dr Joao","crm": 12346 }, "procedureName": "Raio X"}' http://localhost:9093/api/healthcares/<healthcareId>/exams/<examId>
+```
 
+##### Delete an exam 
 
-#### Delete an exam 
-
+```console
 curl -I -X DELETE http://localhost:9093/api/healthcares/<healthcareId>/exams/<examId>
+```
 
+##### Get an exam by its identifier
 
-#### Get an exam by its identifier
-
+```console
 curl -X GET http://localhost:9093/api/healthcares/<healthcareId>/exams/<examId>
+```
 
 
+##### Extra
+
+```console
+curl -X GET localhost:9093/api/healthcares/5e31b8bfea79a90984e441d8/exams/
+```
+
+Traz todos exans de uma healthcare, no caso ele tras apenas os campos **ID** e **Nome do Paciente**. Para não usar coins indevidamente.
+Filtro em pixeon.repository.ExamRepository
 
 
-## Functional requirements
+### Functional requirements
 
-#### Each new healthcare institution must receive 20 pixeon coins to save exams and retrieve them.
+##### Each new healthcare institution must receive 20 pixeon coins to save exams and retrieve them.
 
 É criada a partir do recurso [Create a Healthcare](#create-a-healthcare)
 Este é usado o servico de healthcare
 
-#### Every exam successfully created must charge 1 pixeon coin from the healthcare institution's bugdet
+##### Every exam successfully created must charge 1 pixeon coin from the healthcare institution's bugdet
 
 É criada a partir do recurso [Create an exam](#create-an-exam)
 Ao criar um Exam ele usa o micro serviço healthcare para descontar coins
 
-#### You must charge 1 pixeon coin from the budget when one healthcare institution retrieves an exame but if the institution retrieves the same exame more than once you must not charge it, which means you have to charge only the first access to the exam.
+##### You must charge 1 pixeon coin from the budget when one healthcare institution retrieves an exame but if the institution retrieves the same exame more than once you must not charge it, which means you have to charge only the first access to the exam.
 
 É recuperado a partir do recurso [Get an exam by its identifier](#get-an-exam-by-its-identifier)
 Ele verifica se o exame já foi recuperado anteriormente, senao ele desconta um coin do micro serviço healthcare
 
-#### A healthcare institution must not have access to an exam that belongs to other healthcare institution.
+##### A healthcare institution must not have access to an exam that belongs to other healthcare institution.
 
-Uma healthcare não tem acesso direto aos exames, mas poderiamos fazer esse bloqueio via recurso. 
-Poderiamos bater o token de acesso com o path do recurso /healthcare/healthcareId do serviço de Exam. Onde apenas poderia acessar a partir desse path o token que possuir o acesso a healthcare.
+Recurso: [Trazer todos exams de uma healthcare](#extra)
 
-Para trabalhar uma ideia paralela eu coloquei o @PostAuthorize na classe pixeon.controller.ExamController que verifica o retorno com o path enviado.
+Na aplicação, uma healthcare não tem acesso direto aos exames, mas poderiamos fazer esse bloqueio via recurso. 
+Poderiamos bater o token de acesso com o path do recurso /healthcare/healthcareId do serviço de Exam. Onde apenas poderia acessar a partir desse path o token que possuir o acesso a healthcare. 
 
-Obs.: Não é a ideia proposta acima, e sim um outro ponto de segurança.
+Para trabalhar uma idéia paralela eu coloquei o @PostAuthorize na classe pixeon.controller.ExamController que verifica o retorno com o path enviado.
+
+Obs.: Não é a ideia proposta acima, e sim um outro ponto de segurança, mesmo que um pouco frágil.
 
 
-#### A healthcare institution is not allowed to create or get an exam when running out of budget. 
+##### A healthcare institution is not allowed to create or get an exam when running out of budget. 
 
 Desenvolvido nos recursos [Create a Healthcare](#create-a-healthcare) e [Create an exam](#create-an-exam)
 
 Este retorna um erro 500 com uma mensagem amigável.
 
-#### We are expecting you to build the solution using Spring Framework and we also do not care about the database or any other tool that you might choose.
+##### We are expecting you to build the solution using Spring Framework and we also do not care about the database or any other tool that you might choose.
 
 Desenvolvido com springboot versão 2.2.2.RELEASE
 
 
+## Executando
 
-## Acesso mongodb
+Os projetos podem ser execultados com o comando abaixo em cada diretório
+```console
+mvn spring-boot:run
+```
+
+### Acesso mongodb
 
 host: cluster0-shard-00-00-96z4g.mongodb.net
 port: 27017
@@ -100,4 +127,10 @@ mongo "mongodb://cluster0-shard-00-00-96z4g.mongodb.net:27017,cluster0-shard-00-
 
 
 
+
+### Erro ocasionais
+
+
+##### com.netflix.client.ClientException: Load balancer does not have available server for client: pixeon-healthcare-service
+Aguarde balanceamento
 

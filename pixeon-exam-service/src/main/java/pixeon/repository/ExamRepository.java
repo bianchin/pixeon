@@ -8,7 +8,7 @@ import java.util.List;
 
 public interface ExamRepository extends MongoRepository<Exam, String> {
 
-    @Query(value="{ healthcareInstitutionId : ?0}", fields="{ patientName : 1 }")
+    @Query(value="{ healthcareInstitutionId : ?0}", fields="{ 'patient.name' : 1 }")
     List<Exam> findByHealthcareInstitutionId(String healthcareInstitutionId);
 
 
