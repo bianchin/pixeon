@@ -28,7 +28,9 @@ Arquivos de configuração estão no [repositório git](https://github.com/bianc
 
 ##### Create a Healthcare
 
+```
 curl -X POST -H 'Content-Type: application/json' -d '{"name": "Hospital Sao Jose 1", "cnpj": "74588658000100"}' http://localhost:9094/api/healthcares/
+```
 
 Retorna o código do **healthcareId** a ser usado nas proximas requisições
 
@@ -118,14 +120,17 @@ mvn spring-boot:run
 
 ### Acesso mongodb
 
-host: cluster0-shard-00-00-96z4g.mongodb.net
-port: 27017
-database: admin
-username: pixeon
-password: vcs1gFUK5i7rsGAZ
 
+- host: cluster0-shard-00-00-96z4g.mongodb.net
+- port: 27017
+- database: admin
+- username: pixeon
+- password: vcs1gFUK5i7rsGAZ
+
+
+```
 mongo "mongodb://cluster0-shard-00-00-96z4g.mongodb.net:27017,cluster0-shard-00-01-96z4g.mongodb.net:27017,cluster0-shard-00-02-96z4g.mongodb.net:27017/test?replicaSet=Cluster0-shard-0" --ssl --authenticationDatabase admin --username pixeon --password <password>
-
+```
 
 
 
