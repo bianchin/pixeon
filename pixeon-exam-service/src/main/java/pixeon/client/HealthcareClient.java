@@ -10,5 +10,5 @@ import org.springframework.web.bind.annotation.PostMapping;
 public interface HealthcareClient {
 
 	@PostMapping("/api/healthcares/{id}/charge")
-	Boolean charge(@PathVariable("id") String id);
+	void charge(@PathVariable("id") String id);
 }

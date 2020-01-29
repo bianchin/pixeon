@@ -5,8 +5,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
 import pixeon.client.HealthcareClient;
+import pixeon.exception.NotFoundException;
 import pixeon.model.Exam;
 import pixeon.repository.ExamRepository;
+
+import java.util.List;
+import java.util.Optional;
 
 @Service
 public class ExamService {
@@ -22,15 +26,31 @@ public class ExamService {
         return examRepository.save(exam);
     }
 
-    public Exam findById(String id){
-        return examRepository.findById(id).get();
+    public Exam update(@Validated Exam exam) {
+        return examRepository.save(exam);
     }
 
-    public Iterable<Exam> findAll(){
-        return examRepository.findAll();
+
+    public Exam findById(String id){
+        return examRepository.findById(id).orElseThrow(() -> new NotFoundException());
+    }
+
+    public Exam retrieve(String id){
+        Exam exam = findById(id);
+        if (!exam.getRetrieved()) {
+            healthcareClient.charge(exam.getHealthcareInstitutionId());
+            exam.setRetrieved(true);
+            examRepository.save(exam);
+        }
+        return exam;
+    }
+
+    public List<Exam> findByHealthcareInstitutionId(String healthcareInstitutionId){
+        return examRepository.findByHealthcareInstitutionId(healthcareInstitutionId);
     }
 
     public void delete(String id) {
+        findById(id);
         examRepository.deleteById(id);
     }
 }

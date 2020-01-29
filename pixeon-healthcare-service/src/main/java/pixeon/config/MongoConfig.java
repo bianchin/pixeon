@@ -1,6 +1,7 @@
 package pixeon.config;
 
 import com.mongodb.*;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -13,15 +14,29 @@ import java.util.List;
 @Configuration
 public class MongoConfig {
 
+    @Value("${spring.data.mongodb.host}")
+    private String host;
+
+    @Value("${spring.data.mongodb.port}")
+    private Integer port;
+
+    @Value("${spring.data.mongodb.database}")
+    private String database;
+
+    @Value("${spring.data.mongodb.username}")
+    private String username;
+
+    @Value("${spring.data.mongodb.password}")
+    private String password;
+
     @Bean
     public MongoClient mongoClient() {
         List<ServerAddress> saList = new ArrayList<>();
-        saList.add(new ServerAddress("cluster0-shard-00-00-96z4g.mongodb.net", 27017));
-        saList.add(new ServerAddress("cluster0-shard-00-00-96z4g.mongodb.net", 27017));
-        saList.add(new ServerAddress("cluster0-shard-00-00-96z4g.mongodb.net", 27017));
+        saList.add(new ServerAddress(host, port));
+        saList.add(new ServerAddress(host, port));
+        saList.add(new ServerAddress(host, port));
 
-        char[] pwd =  "vcs1gFUK5i7rsGAZ".toCharArray();
-        MongoCredential credential = MongoCredential.createCredential("pixeon", "admin", pwd);
+        MongoCredential credential = MongoCredential.createCredential(username, "admin", password.toCharArray());
 
         //set sslEnabled to true here
         MongoClientOptions options = MongoClientOptions.builder()

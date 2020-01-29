@@ -17,8 +17,8 @@ public class HealthcareController {
     private HealthcareService healthcareService;
 
     @RequestMapping(method = RequestMethod.POST)
-    public ResponseEntity<Healthcare> save(@RequestBody Healthcare healthcare){
-        return ResponseEntity.ok(healthcareService.save(healthcare));
+    public ResponseEntity<String> save(@RequestBody Healthcare healthcare){
+        return ResponseEntity.ok(healthcareService.save(healthcare).getId());
     }
 
     @RequestMapping(method = RequestMethod.GET)
@@ -31,16 +31,16 @@ public class HealthcareController {
 
         Boolean charged = healthcareService.charge(id);
         if (charged==false) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new ErrorMessage("Insufficient pixon coin"));
+            return ResponseEntity
+                    .status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(
+                            ErrorMessage
+                                    .newBuilder()
+                                    .message("Insufficient pixon coin")
+                                    .build()
+                    );
         }
-
-
-
-
         return ResponseEntity.ok().build();
-
-
-
     }
 
 }

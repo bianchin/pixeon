@@ -14,18 +14,18 @@ import java.util.stream.Collectors;
 @ControllerAdvice
 public class ExceptionHandlerController {
 
-    @ExceptionHandler(NoSuchElementException.class)
-    public ResponseEntity<?> error(NoSuchElementException ex){
+    @ExceptionHandler(NotFoundException.class)
+    public ResponseEntity<?> error(NotFoundException e){
         return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
     }
 
     @ExceptionHandler(FeignException.class)
-    public ResponseEntity<?> error(FeignException ex){
-        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).contentType(MediaType.APPLICATION_JSON).body(ex.content());
+    public ResponseEntity<?> error(FeignException e){
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).contentType(MediaType.APPLICATION_JSON).body(e.content());
     }
 
     @ExceptionHandler(Exception.class)
-    public ResponseEntity<?> error(Exception ex){
-        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(ex.getMessage());
+    public ResponseEntity<?> error(Exception e){
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
     }
 }

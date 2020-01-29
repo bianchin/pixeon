@@ -4,30 +4,30 @@ import org.hibernate.validator.constraints.NotEmpty;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 
 @Document
-public class Exam implements Serializable {
-
-    private static final long serialVersionUID = 1L;
+public class Exam {
 
     @Id
     private String id;
 
     private String healthcareInstitutionId;
 
-    private String patientName;
+    @NotNull (message = "You must place a valid Patient")
+    @Valid
+    private Patient patient;
 
-    private String patientAge;
+    @NotNull (message = "You must place a valid Physician")
+    @Valid
+    private Physician physician;
 
-    private String patientGender;
-
-    private String physicianName;
-
-    private String physicianCRM;
-
+    @NotNull
     private String procedureName;
+
+    private Boolean retrieved = false;
 
     public String getId() {
         return id;
@@ -45,44 +45,20 @@ public class Exam implements Serializable {
         this.healthcareInstitutionId = healthcareInstitutionId;
     }
 
-    public String getPatientName() {
-        return patientName;
+    public Patient getPatient() {
+        return patient;
     }
 
-    public void setPatientName(String patientName) {
-        this.patientName = patientName;
+    public void setPatient(Patient patient) {
+        this.patient = patient;
     }
 
-    public String getPatientAge() {
-        return patientAge;
+    public Physician getPhysician() {
+        return physician;
     }
 
-    public void setPatientAge(String patientAge) {
-        this.patientAge = patientAge;
-    }
-
-    public String getPatientGender() {
-        return patientGender;
-    }
-
-    public void setPatientGender(String patientGender) {
-        this.patientGender = patientGender;
-    }
-
-    public String getPhysicianName() {
-        return physicianName;
-    }
-
-    public void setPhysicianName(String physicianName) {
-        this.physicianName = physicianName;
-    }
-
-    public String getPhysicianCRM() {
-        return physicianCRM;
-    }
-
-    public void setPhysicianCRM(String physicianCRM) {
-        this.physicianCRM = physicianCRM;
+    public void setPhysician(Physician physician) {
+        this.physician = physician;
     }
 
     public String getProcedureName() {
@@ -91,5 +67,13 @@ public class Exam implements Serializable {
 
     public void setProcedureName(String procedureName) {
         this.procedureName = procedureName;
+    }
+
+    public Boolean getRetrieved() {
+        return retrieved;
+    }
+
+    public void setRetrieved(Boolean retrieved) {
+        this.retrieved = retrieved;
     }
 }
