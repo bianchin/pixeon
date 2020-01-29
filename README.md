@@ -33,35 +33,35 @@ Retorna o código do **healthcareId** a ser usado nas proximas requisições
 
 ##### Create an exam
 
-```console
-curl -X POST -H 'Content-Type: application/json' -d '{"patient" : {"name": "Jose Silva","age": 25, "gender": "M" }, "physician" : {"name": "Dr Joao","crm": 12345 }, "procedureName": "Raio X"}' http://localhost:9093/api/healthcares/<healthcareId>/exams/
+```
+curl -X POST -H 'Content-Type: application/json' -d '{"patient" : {"name": "Jose Silva","age": 25, "gender": "M" }, "physician" : {"name": "Dr Joao","crm": 12345 }, "procedureName": "Raio X"}' http://localhost:9093/api/healthcares/{{healthcareId}}/exams/
 ```
 
 Retorna o **examId** a ser usado nas próximas requisições
 
 ##### Update an exam
 
-```console
-curl -X PUT -H 'Content-Type: application/json' -d '{"patient" : {"name": "Jose Silva","age": 25, "gender": "M" }, "physician" : {"name": "Dr Joao","crm": 12346 }, "procedureName": "Raio X"}' http://localhost:9093/api/healthcares/<healthcareId>/exams/<examId>
+```
+curl -X PUT -H 'Content-Type: application/json' -d '{"patient" : {"name": "Jose Silva","age": 25, "gender": "M" }, "physician" : {"name": "Dr Joao","crm": 12346 }, "procedureName": "Raio X"}' http://localhost:9093/api/healthcares/{{healthcareId}}/exams/{examId}}
 ```
 
 ##### Delete an exam 
 
-```console
-curl -I -X DELETE http://localhost:9093/api/healthcares/<healthcareId>/exams/<examId>
+```
+curl -I -X DELETE http://localhost:9093/api/healthcares/{{healthcareId}}/exams/{examId}}
 ```
 
 ##### Get an exam by its identifier
 
-```console
-curl -X GET http://localhost:9093/api/healthcares/<healthcareId>/exams/<examId>
+```
+curl -X GET http://localhost:9093/api/healthcares/{{healthcareId}}/exams/{examId}}
 ```
 
 
 ##### Extra
 
-```console
-curl -X GET localhost:9093/api/healthcares/5e31b8bfea79a90984e441d8/exams/
+```
+curl -X GET localhost:9093/api/healthcares/{{healthcareId}}/exams/
 ```
 
 Traz todos exans de uma healthcare, no caso ele tras apenas os campos **ID** e **Nome do Paciente**. Para não usar coins indevidamente.
@@ -111,7 +111,7 @@ Desenvolvido com springboot versão 2.2.2.RELEASE
 ## Executando
 
 Os projetos podem ser execultados com o comando abaixo em cada diretório
-```console
+```
 mvn spring-boot:run
 ```
 
@@ -128,9 +128,14 @@ mongo "mongodb://cluster0-shard-00-00-96z4g.mongodb.net:27017,cluster0-shard-00-
 
 
 
-### Erro ocasionais
+### Erro e mensagens
 
 
 ##### com.netflix.client.ClientException: Load balancer does not have available server for client: pixeon-healthcare-service
 Aguarde balanceamento
 
+##### Resource not found
+Está sendo enviado um healthcare inexistente
+
+##### Insufficient pixon coin
+O healthcare não possui coins suficiente para criar ou recuperar exames

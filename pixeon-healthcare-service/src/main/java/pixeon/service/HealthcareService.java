@@ -3,6 +3,7 @@ package pixeon.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
+import pixeon.exception.NotFoundException;
 import pixeon.model.Healthcare;
 import pixeon.repository.HealthcareRepository;
 
@@ -20,7 +21,7 @@ public class HealthcareService {
     }
 
     public Boolean charge(String id){
-        Healthcare healthcare = healthcareRepository.findById(id).get();
+        Healthcare healthcare = findById(id);
         Integer coins = healthcare.getCoins();
         if (coins==0) {
             return false;
@@ -31,11 +32,14 @@ public class HealthcareService {
         return true;
     }
 
+    public Healthcare findById(String id){
+        return healthcareRepository.findById(id).orElseThrow(() -> new NotFoundException());
+    }
+
+
     public Iterable<Healthcare> findAll(){
         return healthcareRepository.findAll();
     }
 
-    public void delete(String id) {
-        healthcareRepository.deleteById(id);
-    }
+
 }

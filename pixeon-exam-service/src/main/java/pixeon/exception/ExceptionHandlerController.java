@@ -21,6 +21,9 @@ public class ExceptionHandlerController {
 
     @ExceptionHandler(FeignException.class)
     public ResponseEntity<?> error(FeignException e){
+        if (e.status() == 404) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Resource not found");
+        }
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).contentType(MediaType.APPLICATION_JSON).body(e.content());
     }
 
