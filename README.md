@@ -114,6 +114,9 @@ Desenvolvido com springboot versão 2.2.2.RELEASE
 ## Executando
 
 Os projetos podem ser execultados com o comando abaixo em cada diretório
+
+**Devem estar os 4 projetos rodando para o funcionmanto correto de todos os recursos**
+
 ```
 mvn spring-boot:run
 ```
