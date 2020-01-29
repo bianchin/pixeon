@@ -3,26 +3,27 @@
 
 ### Construção
 
-Foi desenvolvido com Springboot versão 2.2.2.RELEASE
+Foi desenvolvido com **Springboot** versão 2.2.2.RELEASE
 
-Foquei na contrução usando microserviços e não ligações diretas via banco de dados.
+Desenvolvi a arquitetura baseada em **microservices** com o **spring cloud**.
 
-Pensei na possíbilidade de usar um banco H2 para facilitar a execução, mas foi construido em um banco NoSQL em um servidor remoto (mongodb atlas, dados de acesso link)  para não ter que instalar localmente.
+A construção foi em um banco **NoSQL** (MongoDB) em um servidor remoto, [acesso](#acesso-mongodb), para não ter que instalar localmente.
 
-Os serviços se comunicam via REST, o que nesse caso geralmente eu adotaria um event source ou uma mensageria simples.
+Os serviços se comunicam entre eles via REST, o que nesse caso geralmente eu adotaria um event source ou uma mensageria simples.
 
 Foi criado 2 servicos (Exam e Healthcare), um servidor de configuração e um service discovery
 
-- pixeon-config-server: localhost:9091
-- pixeon-eureka-server: localhost:9092
-- pixeon-exam-service: localhost:9093
-- pixeon-healthcare-service: localhost:9094
+- **pixeon-config-server**: localhost:9091
+- **pixeon-eureka-server**: localhost:9092
+- **pixeon-exam-service**: localhost:9093
+- **pixeon-healthcare-service**: localhost:9094
 
-Arquivos de configuração estáo no repositorio [repositorio git](https://github.com/bianchin/pixeon-configs)
+Arquivos de configuração estão no [repositório git](https://github.com/bianchin/pixeon-configs)
+
+
 
 
 ### Solution
-
 
 
 ##### Create a Healthcare
