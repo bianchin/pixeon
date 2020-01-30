@@ -115,11 +115,17 @@ Desenvolvido com springboot versão 2.2.2.RELEASE
 
 Os projetos podem ser execultados com o comando abaixo em cada diretório
 
-**Devem estar os 4 projetos rodando para o funcionmanto correto de todos os recursos**
+**Devem estar os 4 projetos rodando para o funcionmanto correto de todos os recursos, de preferencia na ordem após o comando**
 
 ```
 mvn spring-boot:run
 ```
+
+1. pixeon-config-server (deve estar rodando para inicar os outros)
+2. pixeon-eureka-server
+3. pixeon-exam-service
+4. pixeon-healthcare-service
+
 
 ### Acesso mongodb
 
