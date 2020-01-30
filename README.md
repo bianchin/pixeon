@@ -147,7 +147,7 @@ mongo "mongodb://cluster0-shard-00-00-96z4g.mongodb.net:27017,cluster0-shard-00-
 
 
 ##### com.netflix.client.ClientException: Load balancer does not have available server for client: pixeon-healthcare-service
-Aguarde discovery encontrar o serviço
+Aguarde discovery carregar o microserviço
 
 ##### Resource not found
 Está sendo enviado um healthcare inexistente
